@@ -1,23 +1,8 @@
-import {
-  render,
-  waitFor,
-  screen,
-  fireEvent,
-} from "@testing-library/react";
+import { render, waitFor, screen, fireEvent } from "@testing-library/react";
 import TodoBox from "@/component/TodoBox";
 import axios from "axios";
 import "@testing-library/jest-dom";
-
-const mockFetchData = jest.spyOn(axios, "get").mockImplementation(async () => {
-  return {
-    data: [
-      { name: "gohome", complete: true },
-      { name: "hangout", complete: true },
-      { name: "eat", complete: false },
-      { name: "drink", complete: false },
-    ],
-  };
-});
+import { mockFetchData } from "../utils/mockRequest";
 
 describe("could set complete and delete", () => {
   beforeEach(() => {
@@ -71,7 +56,9 @@ describe("test add new todo", () => {
   };
 
   beforeEach(async () => {
-    render(<TodoBox />);
+    await waitFor(() => {
+      render(<TodoBox />);
+    });
     await waitFor(async () => {
       const planedTodos = await screen.findAllByTestId("worktodo");
 
